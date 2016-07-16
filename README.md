@@ -1,6 +1,6 @@
 # COCODE (code cocode, duuh)
 
-Simple assembly like 'lang', which can be used to program CPython directly:
+Simple assembly-like language, which can be used to program CPython directly:
 ```python
 from cocode import CodeObjectProxy, Constant, Return, Add
 
