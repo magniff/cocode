@@ -1,9 +1,7 @@
-from .base import BaseInstruction
-from .noarg_instructions import (
+from .instruction_base import BaseInstruction
+from .nonargy import (
     Add, Negate, Nop, Pop, Return, Yield, Rot2, Rot3
 )
 
-from .pushers import Constant, Variable, List
-from .other import Bind
-
+from .argy import Constant, Variable, List, Bind, JumpTo, Label
 from .proxy import CodeObjectProxy

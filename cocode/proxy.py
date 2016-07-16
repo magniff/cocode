@@ -1,7 +1,7 @@
 import types
 import watch
 
-from .base import BaseInstruction
+from cocode.instruction_base import BaseInstruction
 
 
 class ContextProxy:
@@ -32,14 +32,28 @@ class ContextProxy:
 
 class BytecodeProxy:
 
+    def get_label(self, label_name):
+        return self.labels[label_name]
+
+    def set_label(self, label_name):
+        if label_name not in self.labels:
+            self.labels[label_name] = self.current_position
+        else:
+            raise ValueError("Redifinition of label %s." % label_name)
+
     def add(self, value):
         self.bytes.append(value)
+
+    @property
+    def current_position(self):
+        return len(self.bytes)
 
     @property
     def stacksize(self):
         return 3
 
     def __init__(self):
+        self.labels = dict()
         self.bytes = list()
 
 
