@@ -28,3 +28,20 @@ def test_name_binding():
     eval(code, g, l)
     assert "varname" in l
     assert l['varname'] == "Hello"
+
+
+def test_variable_simple():
+    code_proxy = CodeObjectProxy(
+        Constant("Hello "),
+        Variable("string"),
+        Add(),
+        Bind("new_var"),
+        Variable("new_var"),
+        Return()
+    )
+
+    code = code_proxy.assemble()
+    globs = {}
+    locs = {'string': "world!"}
+    assert eval(code, globs, locs) == "Hello world!"
+    assert locs["new_var"] == "Hello world!"
