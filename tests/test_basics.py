@@ -1,4 +1,4 @@
-from stackmachine import (
+from cocode import (
     CodeObjectProxy, Constant, Variable, Return, Add, List, Bind
 )
 
@@ -45,3 +45,15 @@ def test_variable_simple():
     locs = {'string': "world!"}
     assert eval(code, globs, locs) == "Hello world!"
     assert locs["new_var"] == "Hello world!"
+
+
+def test_list_simple():
+    code_proxy = CodeObjectProxy(
+        Constant("Hello"),
+        Constant("world"),
+        List(2),
+        Return(),
+    )
+
+    code = code_proxy.assemble()
+    assert eval(code) == ["Hello", "world"]

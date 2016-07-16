@@ -2,14 +2,12 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='pyasm',
+    name='cocode',
     author='magniff',
-    description='Allows to build python code objects directly.',
+    description='Kind of assembly-like DLS for CPythons vm.',
     license='MIT',
-    url='https://github.com/magniff/pyasm',
+    url='https://github.com/magniff/cocode',
     version='0.1',
     packages=find_packages(),
-    install_requires=[
-    ],
     zip_safe=False,
 )
