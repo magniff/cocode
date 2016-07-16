@@ -26,7 +26,7 @@ class ContextProxy:
 
     def __init__(self):
         self.names = list()
-        self.varnames = list()
+        self.varnames = self.names
         self.constants = list()
 
 
@@ -37,7 +37,7 @@ class BytecodeProxy:
 
     @property
     def stacksize(self):
-        return 10
+        return 3
 
     def __init__(self):
         self.bytes = list()
@@ -63,7 +63,7 @@ class CodeObjectProxy(watch.WatchMe):
             0,                              # kwonlyargcount
             self.context.nlocals,           # nlocals
             self.bytecode.stacksize,        # stacksize
-            67,                             # flags
+            64,                             # flags
             bytes(self.bytecode.bytes),     # codestring
             tuple(self.context.constants),  # constants
             tuple(self.context.names),      # names
