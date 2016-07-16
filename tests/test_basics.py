@@ -24,10 +24,10 @@ def test_name_binding():
     )
 
     code = code_proxy.assemble()
-    g = l = dict()
-    eval(code, g, l)
-    assert "varname" in l
-    assert l['varname'] == "Hello"
+    locals_dict = dict()
+    eval(code, {}, locals_dict)
+    assert "varname" in locals_dict
+    assert locals_dict['varname'] == "Hello"
 
 
 def test_variable_simple():
@@ -41,10 +41,9 @@ def test_variable_simple():
     )
 
     code = code_proxy.assemble()
-    globs = {}
-    locs = {'string': "world!"}
-    assert eval(code, globs, locs) == "Hello world!"
-    assert locs["new_var"] == "Hello world!"
+    locals_dict = {'string': "world!"}
+    assert eval(code, {}, locals_dict) == "Hello world!"
+    assert locals_dict["new_var"] == "Hello world!"
 
 
 def test_list_simple():
