@@ -1,2 +1,2 @@
 from .load_store import Bind, Constant, List, Variable
-from .branching import JumpTo, Label
+from .branching import JumpToLabel, Label

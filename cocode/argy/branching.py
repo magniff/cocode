@@ -1,31 +1,29 @@
 import watch
 
-from cocode.instruction_base import BaseInstruction
+from cocode.instruction_base import BaseArgyInstruction, BaseInstruction
 
 
 class Label(BaseInstruction):
+    instruction = watch.builtins.InstanceOf(BaseInstruction)
     label_name = watch.builtins.InstanceOf(str)
 
-    def __init__(self, label_name):
+    def __init__(self, instruction, label_name):
+        self.instruction = instruction
         self.label_name = label_name
 
-    def render(self, code_proxy):
-        code_proxy.bytecode.set_label(self.label_name)
+    def set_position(self, position):
+        self.instruction.set_position(position)
 
-
-class JumpTo(BaseInstruction):
-    label_name = watch.builtins.InstanceOf(str)
-    condition = watch.SomeOf(
-        watch.builtins.InstanceOf(bool),
-        watch.builtins.EqualsTo(None)
-    )
-
-    def __init__(self, label_name, condition=None):
-        self.label_name = label_name
-        self.condition = condition
+    def get_position(self):
+        return self.instruction.get_position()
 
     def render(self, code_proxy):
-        target = code_proxy.bytecode.get_label(self.label_name)
-        code_proxy.bytecode.add(self.opmap["JUMP_ABSOLUTE"])
-        for value in self.pack_to_short(target):
-            code_proxy.bytecode.add(value)
+        return self.instruction.render(code_proxy)
+
+
+class JumpToLabel(BaseArgyInstruction):
+    opname = "JUMP_ABSOLUTE"
+    arg = watch.builtins.InstanceOf(str)
+
+    def arg_to_number(self, code_proxy):
+        return code_proxy.label_map[self.arg]

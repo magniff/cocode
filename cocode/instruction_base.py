@@ -6,6 +6,16 @@ import watch
 
 class BaseInstruction(watch.WatchMe):
     opname = None
+    position = watch.builtins.InstanceOf(int)
+
+    def __len__(self):
+        return 1
+
+    def set_position(self, position):
+        self.position = position
+
+    def get_position(self):
+        return self.position
 
     def render(self, code_proxy):
         """
@@ -15,8 +25,10 @@ class BaseInstruction(watch.WatchMe):
 
 
 class BaseArgyInstruction(BaseInstruction):
-    opname = None
     arg = None
+
+    def __len__(self):
+        return 3
 
     @staticmethod
     def pack_to_short(value):
@@ -26,7 +38,9 @@ class BaseArgyInstruction(BaseInstruction):
         self.arg = arg
 
     def arg_to_number(self, code_proxy):
-        raise NotImplementedError()
+        raise NotImplementedError(
+            "How to convert arg -> int for opcode %s?" % self.opname
+        )
 
     def render(self, code_proxy):
         super().render(code_proxy)

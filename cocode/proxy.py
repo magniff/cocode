@@ -2,6 +2,7 @@ import types
 import watch
 
 from cocode.instruction_base import BaseInstruction
+from cocode.argy.branching import Label
 
 
 class ContextProxy:
@@ -30,30 +31,17 @@ class ContextProxy:
         self.constants = list()
 
 
-class BytecodeProxy:
-
-    def get_label(self, label_name):
-        return self.labels[label_name]
-
-    def set_label(self, label_name):
-        if label_name not in self.labels:
-            self.labels[label_name] = self.current_position
-        else:
-            raise ValueError("Redifinition of label %s." % label_name)
+class BytecodeProxy(watch.WatchMe):
+    bytes = watch.ArrayOf(watch.builtins.InstanceOf(int))
 
     def add(self, value):
         self.bytes.append(value)
-
-    @property
-    def current_position(self):
-        return len(self.bytes)
 
     @property
     def stacksize(self):
         return 3
 
     def __init__(self):
-        self.labels = dict()
         self.bytes = list()
 
 
@@ -62,13 +50,31 @@ class CodeObjectProxy(watch.WatchMe):
     bytecode = BytecodeProxy
     context = ContextProxy
     instructions = watch.ArrayOf(watch.builtins.InstanceOf(BaseInstruction))
+    label_map = watch.MappingOf(
+        values_type=watch.builtins.InstanceOf(int),
+        keys_type=watch.builtins.InstanceOf(str)
+    )
 
     def __init__(self, *instructions):
         self.instructions = instructions
         self.context = self.context()
         self.bytecode = self.bytecode()
+        self.label_map = dict()
 
     def assemble(self):
+        # start with calculation of byte shift for every instruction
+        current_position = 0
+        for instruction in self.instructions:
+            instruction.set_position(current_position)
+            current_position += len(instruction)
+
+        # finally setting label map
+        self.label_map = {
+            label.label_name: label.get_position() for
+            label in self.instructions if isinstance(label, Label)
+        }
+
+        # now everything is ready to render instructions
         for instruction in self.instructions:
             instruction.render(self)
 
