@@ -28,9 +28,11 @@ class ContextProxy:
     def nlocals(self):
         return len(self.names)
 
-    def __init__(self):
+    def __init__(self, interface):
         self.names = list()
-        self.varnames = list()
+        self.varnames = (
+            interface and list(interface.__code__.co_varnames) or list()
+        )
         self.constants = list()
 
 
@@ -60,16 +62,21 @@ class CodeObjectProxy(watch.WatchMe):
     argcount = watch.builtins.InstanceOf(int)
     kw_argcount = watch.builtins.InstanceOf(int)
     flags = watch.builtins.InstanceOf(int)
+    interface = watch.SomeOf(
+        watch.builtins.InstanceOf(types.FunctionType),
+        watch.builtins.EqualsTo(None)
+    )
 
-    def __init__(self, *instructions, argcount=0, kw_argcount=0, flags=64):
-        self.instructions = instructions
-        self.argcount = argcount
-        self.kw_argcount = kw_argcount
+    def __init__(self, *instr, args=0, kwargs=0, flags=64, interface=None):
+        self.instructions = instr
+        self.argcount = args
+        self.kw_argcount = kwargs
         self.flags = flags
+        self.interface = interface
 
     def assemble(self):
         # create new proxy instances on every assembly request
-        self.context = type(self).context()
+        self.context = type(self).context(self.interface)
         self.bytecode = type(self).bytecode()
         self.label_map = dict()
 
