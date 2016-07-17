@@ -4,35 +4,36 @@ from operator import mul
 from cocode import *
 
 
-factorial_asm = CodeObjectProxy(
+def factorial_asm(value):
+    pass
+
+
+factorial_asm_proxy = CodeObjectProxy(
     Constant(1),
-    Bind("result"),
+    BindFast("result"),
     Label(VariableFast("value"), "start"),
     Constant(1),
     Compare("=="),
     JumpTrue("all_done"),
     VariableFast("value"),
-    Variable("result"),
+    VariableFast("result"),
     Mult(),
-    Bind("result"),
+    BindFast("result"),
     VariableFast("value"),
     Constant(1),
     Sub(),
     BindFast("value"),
     Jump("start"),
-    Label(Variable("result"), "all_done"),
+    Label(VariableFast("result"), "all_done"),
     Return(),
 
-    argcount=1,
+    args=1,
+    interface=factorial_asm,
 )
 
 
-fac_asm_code = factorial_asm.assemble()
-
-
-def factorial_asm(value):
-    pass
-
+factorial_asm_proxy.flags = 67
+fac_asm_code = factorial_asm_proxy.assemble()
 factorial_asm.__code__ = fac_asm_code
 
 

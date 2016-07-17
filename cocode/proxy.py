@@ -24,16 +24,10 @@ class ContextProxy:
     def register_constant(self, name):
         return self._push_value_in_context(name, self.constants)
 
-    @property
-    def nlocals(self):
-        return len(self.names)
-
     def __init__(self, interface):
-        self.names = list()
-        self.varnames = (
-            interface and list(interface.__code__.co_varnames) or list()
-        )
-        self.constants = list()
+        self.names = list(interface.__code__.co_names)
+        self.varnames = list(interface.__code__.co_varnames)
+        self.constants = list(interface.__code__.co_consts)
 
 
 class BytecodeProxy(watch.WatchMe):
@@ -59,22 +53,13 @@ class CodeObjectProxy(watch.WatchMe):
         values_type=watch.builtins.InstanceOf(int),
         keys_type=watch.builtins.InstanceOf(str)
     )
-    argcount = watch.builtins.InstanceOf(int)
-    kw_argcount = watch.builtins.InstanceOf(int)
-    flags = watch.builtins.InstanceOf(int)
-    interface = watch.SomeOf(
-        watch.builtins.InstanceOf(types.FunctionType),
-        watch.builtins.EqualsTo(None)
-    )
+    interface = watch.builtins.InstanceOf(types.FunctionType)
 
-    def __init__(self, *instr, args=0, kwargs=0, flags=64, interface=None):
+    def __init__(self, *instr, interface=(lambda: None)):
         self.instructions = instr
-        self.argcount = args
-        self.kw_argcount = kwargs
-        self.flags = flags
         self.interface = interface
 
-    def assemble(self):
+    def assemble(self, code_flags=64):
         # create new proxy instances on every assembly request
         self.context = type(self).context(self.interface)
         self.bytecode = type(self).bytecode()
@@ -96,18 +81,19 @@ class CodeObjectProxy(watch.WatchMe):
         for instruction in self.instructions:
             instruction.render(self)
 
+        interface_code = self.interface.__code__
         return types.CodeType(
-            self.argcount,                  # argcount
-            self.kw_argcount,               # kwonlyargcount
-            self.context.nlocals,           # nlocals
-            self.bytecode.stacksize,        # stacksize
-            self.flags,                     # flags
-            bytes(self.bytecode.bytes),     # codestring
-            tuple(self.context.constants),  # constants
-            tuple(self.context.names),      # names
-            tuple(self.context.varnames),   # varnames
-            '<string>',                     # filename
-            '<noname code object>',         # name
-            0,                              # firstlineno
-            bytes()                         # lnotab
+            interface_code.co_argcount,                # argcount
+            interface_code.co_kwonlyargcount,          # kwonlyargcount
+            len(self.context.names),                   # nlocals
+            self.bytecode.stacksize,                   # stacksize
+            code_flags or interface_code.co_flags,     # flags
+            bytes(self.bytecode.bytes),                # codestring
+            tuple(self.context.constants),             # constants
+            tuple(self.context.names),                 # names
+            tuple(self.context.varnames),              # varnames
+            '<string>',                                # filename
+            '<code of %s>' % self.interface.__name__,  # name
+            0,                                         # firstlineno
+            bytes()                                    # lnotab
         )
