@@ -54,9 +54,15 @@ class CodeObjectProxy(watch.WatchMe):
         values_type=watch.builtins.InstanceOf(int),
         keys_type=watch.builtins.InstanceOf(str)
     )
+    argcount = watch.builtins.InstanceOf(int)
+    kw_argcount = watch.builtins.InstanceOf(int)
+    flags = watch.builtins.InstanceOf(int)
 
-    def __init__(self, *instructions):
+    def __init__(self, *instructions, argcount=0, kw_argcount=0, flags=64):
         self.instructions = instructions
+        self.argcount = argcount
+        self.kw_argcount = kw_argcount
+        self.flags = flags
 
     def assemble(self):
         # create new proxy instances on every assembly request
@@ -81,11 +87,11 @@ class CodeObjectProxy(watch.WatchMe):
             instruction.render(self)
 
         return types.CodeType(
-            0,                              # argcount
-            0,                              # kwonlyargcount
+            self.argcount,                  # argcount
+            self.kw_argcount,               # kwonlyargcount
             self.context.nlocals,           # nlocals
             self.bytecode.stacksize,        # stacksize
-            64,                             # flags
+            self.flags,                     # flags
             bytes(self.bytecode.bytes),     # codestring
             tuple(self.context.constants),  # constants
             tuple(self.context.names),      # names
