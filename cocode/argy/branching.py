@@ -21,17 +21,20 @@ class Label(BaseInstruction):
         return self.instruction.render(code_proxy)
 
 
-class Jump(BaseArgyInstruction):
-    opname = "JUMP_ABSOLUTE"
+class BaseJumpInstruction(BaseArgyInstruction):
     arg = watch.builtins.InstanceOf(str)
 
     def arg_to_number(self, code_proxy):
         return code_proxy.label_map[self.arg]
 
 
-class JumpTrue(BaseArgyInstruction):
+class Jump(BaseJumpInstruction):
     opname = "JUMP_ABSOLUTE"
-    arg = watch.builtins.InstanceOf(str)
 
-    def arg_to_number(self, code_proxy):
-        return code_proxy.label_map[self.arg]
+
+class JumpTrue(BaseJumpInstruction):
+    opname = "POP_JUMP_IF_TRUE"
+
+
+class JumpFalse(BaseJumpInstruction):
+    opname = "POP_JUMP_IF_FALSE"

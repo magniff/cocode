@@ -3,5 +3,7 @@ from .nonargy import (
     Add, Negate, Nop, Pop, Return, Yield, Rot2, Rot3
 )
 
-from .argy import Constant, Variable, List, Bind, Jump, Label
+from .argy import (
+    Constant, Variable, List, Bind, Jump, JumpFalse, JumpTrue, Label
+)
 from .proxy import CodeObjectProxy
