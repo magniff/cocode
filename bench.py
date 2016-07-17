@@ -36,6 +36,9 @@ def factorial_asm(value):
 factorial_asm.__code__ = fac_asm_code
 
 
+assert factorial_asm(10) == 3628800, "ASM code works, but the result is wrong."
+
+
 def factorial_recursive(value):
     return 1 if value == 1 else factorial_recursive(value - 1) * value
 
