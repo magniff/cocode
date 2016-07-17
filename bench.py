@@ -7,21 +7,23 @@ from cocode import *
 factorial_asm = CodeObjectProxy(
     Constant(1),
     Bind("result"),
-    Label(Variable("value"), "start"),
+    Label(VariableFast("value"), "start"),
     Constant(1),
     Compare("=="),
     JumpTrue("all_done"),
-    Variable("value"),
+    VariableFast("value"),
     Variable("result"),
     Mult(),
     Bind("result"),
-    Variable("value"),
+    VariableFast("value"),
     Constant(-1),
     Add(),
-    Bind("value"),
+    BindFast("value"),
     Jump("start"),
     Label(Variable("result"), "all_done"),
     Return(),
+
+    argcount=1,
 )
 
 
@@ -29,7 +31,9 @@ fac_asm_code = factorial_asm.assemble()
 
 
 def factorial_asm(value):
-    return eval(fac_asm_code, {}, {"value": value})
+    pass
+
+factorial_asm.__code__ = fac_asm_code
 
 
 def factorial_recursive(value):
