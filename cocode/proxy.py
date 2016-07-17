@@ -18,6 +18,9 @@ class ContextProxy:
     def register_name(self, name):
         return self._push_value_in_context(name, self.names)
 
+    def register_varname(self, name):
+        return self._push_value_in_context(name, self.varnames)
+
     def register_constant(self, name):
         return self._push_value_in_context(name, self.constants)
 
@@ -27,7 +30,7 @@ class ContextProxy:
 
     def __init__(self):
         self.names = list()
-        self.varnames = self.names
+        self.varnames = list()
         self.constants = list()
 
 

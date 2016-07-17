@@ -18,12 +18,28 @@ class Variable(BaseArgyInstruction):
         return code_proxy.context.register_name(self.arg)
 
 
+class VariableFast(BaseArgyInstruction):
+    opname = 'LOAD_FAST'
+    arg = watch.builtins.InstanceOf(str)
+
+    def arg_to_number(self, code_proxy):
+        return code_proxy.context.register_varname(self.arg)
+
+
 class Bind(BaseArgyInstruction):
     opname = 'STORE_NAME'
     arg = watch.builtins.InstanceOf(str)
 
     def arg_to_number(self, code_proxy):
         return code_proxy.context.register_name(self.arg)
+
+
+class BindFast(BaseArgyInstruction):
+    opname = 'STORE_FAST'
+    arg = watch.builtins.InstanceOf(str)
+
+    def arg_to_number(self, code_proxy):
+        return code_proxy.context.register_varname(self.arg)
 
 
 class List(BaseArgyInstruction):
