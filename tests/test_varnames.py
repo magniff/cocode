@@ -32,9 +32,9 @@ def test_simple_varname_1():
     code_proxy = CodeObjectProxy(
         VariableFast("varname0"),
         Constant("_"),
-        Add(),
-        VariableFast("varname1"),
-        Add(),
+#         Add(),
+#         VariableFast("varname1"),
+#         Add(),
         Return(),
         interface=func
     )
