@@ -7,6 +7,9 @@ class Label(BaseInstruction):
     instruction = watch.builtins.InstanceOf(BaseInstruction)
     label_name = watch.builtins.InstanceOf(str)
 
+    def __len__(self):
+        return len(self.instruction)
+
     def __init__(self, instruction, label_name):
         self.instruction = instruction
         self.label_name = label_name
