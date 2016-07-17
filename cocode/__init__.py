@@ -1,9 +1,9 @@
 from .instruction_base import BaseInstruction
 from .nonargy import (
-    Add, Negate, Nop, Pop, Return, Yield, Rot2, Rot3
+    Add, Mult, Negate, Nop, Pop, Return, Yield, Rot2, Rot3
 )
 
 from .argy import (
-    Constant, Variable, List, Bind, Jump, JumpFalse, JumpTrue, Label
+    Constant, Variable, List, Bind, Jump, JumpFalse, JumpTrue, Label, Compare
 )
 from .proxy import CodeObjectProxy

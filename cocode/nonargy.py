@@ -9,6 +9,10 @@ class Add(BaseInstruction):
     opname = "BINARY_ADD"
 
 
+class Mult(BaseInstruction):
+    opname = "BINARY_MULTIPLY"
+
+
 class Nop(BaseInstruction):
     opname = "NOP"
 

@@ -1,5 +1,6 @@
 from cocode import (
-    CodeObjectProxy, Constant, Jump, JumpTrue, JumpFalse, Label, Return
+    CodeObjectProxy, Constant, Variable, Jump,
+    JumpTrue, JumpFalse, Label, Return
 )
 
 
@@ -16,22 +17,9 @@ def test_absolute_jump0():
     assert eval(code) == "First"
 
 
-def test_jump_true0():
+def test_jump_true():
     code_proxy = CodeObjectProxy(
-        Constant(True),
-        JumpTrue("mylabel"),
-        Return(),
-        Label(Constant("True branch!"), "mylabel"),
-        Return(),
-    )
-
-    code = code_proxy.assemble()
-    assert eval(code) == "True branch!"
-
-
-def test_jump_true1():
-    code_proxy = CodeObjectProxy(
-        Constant(False),
+        Variable("condition"),
         JumpTrue("mylabel"),
         Constant("False branch!"),
         Return(),
@@ -40,4 +28,20 @@ def test_jump_true1():
     )
 
     code = code_proxy.assemble()
-    assert eval(code) == "False branch!"
+    assert eval(code, {}, {"condition": True}) == "True branch!"
+    assert eval(code, {}, {"condition": False}) == "False branch!"
+
+
+def test_jump_false():
+    code_proxy = CodeObjectProxy(
+        Variable("condition"),
+        JumpFalse("mylabel"),
+        Constant("False branch!"),
+        Return(),
+        Label(Constant("True branch!"), "mylabel"),
+        Return(),
+    )
+
+    code = code_proxy.assemble()
+    assert eval(code, {}, {"condition": False}) == "True branch!"
+    assert eval(code, {}, {"condition": True}) == "False branch!"
