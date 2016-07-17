@@ -16,8 +16,8 @@ factorial_asm = CodeObjectProxy(
     Mult(),
     Bind("result"),
     VariableFast("value"),
-    Constant(-1),
-    Add(),
+    Constant(1),
+    Sub(),
     BindFast("value"),
     Jump("start"),
     Label(Variable("result"), "all_done"),
@@ -45,8 +45,8 @@ def factorial_recursive(value):
 
 def factorial_forloop(value):
     result = 1
-    for _ in range(1, value + 1):
-        result *= 1
+    for i in range(1, value + 1):
+        result *= i
     return result
 
 
