@@ -21,7 +21,15 @@ class Label(BaseInstruction):
         return self.instruction.render(code_proxy)
 
 
-class JumpToLabel(BaseArgyInstruction):
+class Jump(BaseArgyInstruction):
+    opname = "JUMP_ABSOLUTE"
+    arg = watch.builtins.InstanceOf(str)
+
+    def arg_to_number(self, code_proxy):
+        return code_proxy.label_map[self.arg]
+
+
+class JumpTrue(BaseArgyInstruction):
     opname = "JUMP_ABSOLUTE"
     arg = watch.builtins.InstanceOf(str)
 

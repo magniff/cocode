@@ -1,12 +1,12 @@
 from cocode import (
-    CodeObjectProxy, Constant, JumpToLabel, Label, Return
+    CodeObjectProxy, Constant, Jump, Label, Return
 )
 
 
 def test_constants():
     code_proxy = CodeObjectProxy(
         Constant("First"),
-        JumpToLabel("mylabel"),
+        Jump("mylabel"),
         Return(),
         Constant("Second"),
         Label(Return(), "mylabel"),

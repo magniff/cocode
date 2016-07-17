@@ -57,12 +57,14 @@ class CodeObjectProxy(watch.WatchMe):
 
     def __init__(self, *instructions):
         self.instructions = instructions
-        self.context = self.context()
-        self.bytecode = self.bytecode()
-        self.label_map = dict()
 
     def assemble(self):
-        # start with calculation of byte shift for every instruction
+        # create new proxy instances on every assembly request
+        self.context = type(self).context()
+        self.bytecode = type(self).bytecode()
+        self.label_map = dict()
+
+        # calculation of byte shift for every instruction
         current_position = 0
         for instruction in self.instructions:
             instruction.set_position(current_position)
