@@ -71,7 +71,7 @@ class CodeObjectProxy(watch.WatchMe):
             instruction.set_position(current_position)
             current_position += len(instruction)
 
-        # finally setting label map
+        # finally setting up label map
         self.label_map = {
             label.label_name: label.get_position() for
             label in self.instructions if isinstance(label, Label)
@@ -85,9 +85,9 @@ class CodeObjectProxy(watch.WatchMe):
         return types.CodeType(
             interface_code.co_argcount,                # argcount
             interface_code.co_kwonlyargcount,          # kwonlyargcount
-            len(self.context.names),                   # nlocals
+            len(self.context.varnames),                # nlocals
             self.bytecode.stacksize,                   # stacksize
-            code_flags or interface_code.co_flags,     # flags
+            code_flags,                                # flags
             bytes(self.bytecode.bytes),                # codestring
             tuple(self.context.constants),             # constants
             tuple(self.context.names),                 # names

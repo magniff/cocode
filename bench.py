@@ -27,13 +27,10 @@ factorial_asm_proxy = CodeObjectProxy(
     Label(VariableFast("result"), "all_done"),
     Return(),
 
-    args=1,
     interface=factorial_asm,
 )
 
-
-factorial_asm_proxy.flags = 67
-fac_asm_code = factorial_asm_proxy.assemble()
+fac_asm_code = factorial_asm_proxy.assemble(code_flags=67)
 factorial_asm.__code__ = fac_asm_code
 
 

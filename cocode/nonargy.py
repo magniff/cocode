@@ -39,3 +39,7 @@ class Rot2(BaseInstruction):
 
 class Rot3(BaseInstruction):
     opname = "ROT_THREE"
+
+
+class Dup(BaseInstruction):
+    opname = "DUP_TOP"
