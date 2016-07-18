@@ -1,7 +1,7 @@
 from cocode import (
     CodeObjectProxy, Variable, Return, Dup, Rot2, Rot3, VariableFast,
     Compare, Constant, Label, PopJumpTrue, Jump, Add, Sub, Bind, Mult,
-    Pop, PopJumpFalse
+    Pop, PopJumpFalse, Yield
 )
 
 
@@ -55,3 +55,31 @@ def test_fast_factorial():
     fac_asm_code = factorial_asm_proxy.assemble()
     factorial_asm.__code__ = fac_asm_code
     assert factorial_asm(10) == 3628800
+
+
+def test_fib():
+    def fib(a, b):
+        pass
+
+    fib_asm = CodeObjectProxy(
+        VariableFast('a'),
+        VariableFast('b'),
+        Label(Dup(), "loop"),
+        Rot3(),
+        Add(),
+        Dup(),
+        Yield(),
+        Pop(),
+        Jump("loop"),
+        interface=fib,
+    )
+
+    fib_code = fib_asm.assemble(code_flags=99)
+    fib.__code__ = fib_code
+
+    f = fib(1, 1)
+    import dis
+    dis.dis(fib)
+    assert next(f) == 2
+    assert next(f) == 3
+    assert next(f) == 5

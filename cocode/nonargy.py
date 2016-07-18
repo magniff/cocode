@@ -22,6 +22,9 @@ class Nop(BaseInstruction):
 
 
 class Yield(BaseInstruction):
+    """For some reason Cpython retains None on top of the stack after yield.
+    WTF alarm!
+    """
     opname = "YIELD_VALUE"
 
 

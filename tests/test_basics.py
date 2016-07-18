@@ -1,5 +1,5 @@
 from cocode import (
-    CodeObjectProxy, Constant, Variable, Return, Add, List, Bind
+    CodeObjectProxy, Constant, Variable, Return, Add, List, Bind, Yield, Pop,
 )
 
 
@@ -56,3 +56,26 @@ def test_list_simple():
 
     code = code_proxy.assemble()
     assert eval(code) == ["Hello", "world"]
+
+
+def test_simple_generator():
+    def my_gen():
+        pass
+
+    code_proxy = CodeObjectProxy(
+        Constant(1),
+        Constant(2),
+        Constant(3),
+        Yield(),
+        Pop(),
+        Yield(),
+        Pop(),
+        Yield(),
+        interface=my_gen
+    )
+    my_gen.__code__ = code_proxy.assemble(code_flags=99)
+    gen = my_gen()
+
+    assert next(gen) == 3
+    assert next(gen) == 2
+    assert next(gen) == 1
