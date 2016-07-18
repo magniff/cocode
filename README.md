@@ -1,4 +1,4 @@
-# COCODE (code cocode, duuh)
+# COCODE 🐔
 
 Simple assembly-like language, which can be used to program CPython directly:
 ```python
