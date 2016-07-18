@@ -76,6 +76,9 @@ fib_asm_code = CodeObjectProxy(
     interface=fibonacci,
 )
 
+# so, the algorithm is
+# a,b -> a,b,b -> b,a,b -> b,a+b -> yield a+b and loop back
+
 fib_code = fib_asm_code.assemble(code_flags=99)  # make me generator
 fibonacci.__code__ = fib_code
 
