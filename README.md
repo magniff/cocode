@@ -96,4 +96,4 @@ def fib(a, b):
         a,b = b,a+b
         yield b
 ```
-it seams that most of the time interpreter spending at YIELD_VALUE instruction.
+it seems that most of the time interpreter spends at YIELD_VALUE instruction.
