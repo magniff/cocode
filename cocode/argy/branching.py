@@ -35,9 +35,9 @@ class Jump(BaseJumpInstruction):
     opname = "JUMP_ABSOLUTE"
 
 
-class JumpTrue(BaseJumpInstruction):
+class PopJumpTrue(BaseJumpInstruction):
     opname = "POP_JUMP_IF_TRUE"
 
 
-class JumpFalse(BaseJumpInstruction):
+class PopJumpFalse(BaseJumpInstruction):
     opname = "POP_JUMP_IF_FALSE"

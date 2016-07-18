@@ -1,6 +1,6 @@
 from cocode import (
     CodeObjectProxy, Constant, Variable, Jump,
-    JumpTrue, JumpFalse, Label, Return
+    PopJumpTrue, PopJumpFalse, Label, Return
 )
 
 
@@ -20,7 +20,7 @@ def test_absolute_jump0():
 def test_jump_true():
     code_proxy = CodeObjectProxy(
         Variable("condition"),
-        JumpTrue("mylabel"),
+        PopJumpTrue("mylabel"),
         Constant("False branch!"),
         Return(),
         Label(Constant("True branch!"), "mylabel"),
@@ -35,7 +35,7 @@ def test_jump_true():
 def test_jump_false():
     code_proxy = CodeObjectProxy(
         Variable("condition"),
-        JumpFalse("mylabel"),
+        PopJumpFalse("mylabel"),
         Constant("False branch!"),
         Return(),
         Label(Constant("True branch!"), "mylabel"),

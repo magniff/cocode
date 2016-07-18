@@ -2,7 +2,7 @@ import pytest
 
 from cocode import (
     CodeObjectProxy, Variable, Return, Dup, Rot2,
-    Compare, Constant, Label, JumpTrue, Jump, Add, Bind, Mult
+    Compare, Constant, Label, PopJumpTrue, Jump, Add, Bind, Mult
 )
 
 from cocode.argy.load_store import VariableFast
