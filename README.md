@@ -5,10 +5,10 @@ Simple assembly-like language, which can be used to program CPython directly:
 from cocode import CodeObjectProxy, Constant, Return, Add
 
 code_proxy = CodeObjectProxy(
-  Constant("Hello "),
-  Constant("world!"),
-  Add(),
-  Return()
+  Constant("Hello "),  # push constant "Hello " onto value stack
+  Constant("world!"),  # push constant "world!" onto value stack
+  Add(),               # Push summ of last two onto stack
+  Return()             # Terminate frame and return top of the stack to the callee
 )
 
 code = code_proxy.assemble()
