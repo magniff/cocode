@@ -8,7 +8,7 @@ code_proxy = CodeObjectProxy(
   Constant("Hello "),  # push constant "Hello " onto value stack
   Constant("world!"),  # push constant "world!" onto value stack
   Add(),               # Push summ of last two onto stack
-  Return()             # Terminate frame and return top of the stack to the callee
+  Return()             # Terminate frame and return top of the stack to the caller
 )
 
 code = code_proxy.assemble()
