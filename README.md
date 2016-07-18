@@ -25,4 +25,34 @@ As you can see, `cocode` doesn't introduce any additional complexity:
               7 RETURN_VALUE
 ```
 
-To be continued...
+Have a look at factorial example:
+```python
+def factorial_asm(value):
+    pass
+
+
+factorial_asm_proxy = CodeObjectProxy(
+    VariableFast("value"),
+    Dup(),
+    Label(Constant(1), "loop"),
+    Sub(),
+    Dup(),
+    Rot3(),
+    Mult(),
+    Rot2(),
+    Dup(),
+    Constant(1),
+    Compare("=="),
+    JumpFalse("loop"),
+    Pop(),
+    Return(),
+    interface=factorial_asm,
+)
+
+fac_asm_code = factorial_asm_proxy.assemble()
+factorial_asm.__code__ = fac_asm_code
+```
+Then you may use it as always
+```python
+assert factorial_asm(10) == 3628800
+```
