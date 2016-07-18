@@ -38,7 +38,7 @@ class BytecodeProxy(watch.WatchMe):
 
     @property
     def stacksize(self):
-        return 3
+        return 10
 
     def __init__(self):
         self.bytes = list()

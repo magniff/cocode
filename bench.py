@@ -9,28 +9,24 @@ def factorial_asm(value):
 
 
 factorial_asm_proxy = CodeObjectProxy(
-    Constant(1),
-    BindFast("result"),
-    Label(VariableFast("value"), "start"),
+    VariableFast("value"),
+    Dup(),
+    Label(Constant(1), "loop"),
+    Sub(),
+    Dup(),
+    Rot3(),
+    Mult(),
+    Rot2(),
+    Dup(),
     Constant(1),
     Compare("=="),
-    JumpTrue("all_done"),
-    VariableFast("value"),
-    VariableFast("result"),
-    Mult(),
-    BindFast("result"),
-    VariableFast("value"),
-    Constant(1),
-    Sub(),
-    BindFast("value"),
-    Jump("start"),
-    Label(VariableFast("result"), "all_done"),
+    JumpFalse("loop"),
+    Pop(),
     Return(),
-
     interface=factorial_asm,
 )
 
-fac_asm_code = factorial_asm_proxy.assemble(code_flags=67)
+fac_asm_code = factorial_asm_proxy.assemble()
 factorial_asm.__code__ = fac_asm_code
 
 
