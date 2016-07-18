@@ -24,6 +24,8 @@ As you can see, `cocode` doesn't introduce any additional complexity:
               6 BINARY_ADD
               7 RETURN_VALUE
 ```
+### WARNING:
+`cocode` actually generates low level code object from your assembly code, so any awkward movement leads to segfault into CPython internals. So this is your responsibility to write correct algorithm, no additional checks performed.
 
 ###EXAMPLE: factorial function:
 ```python
