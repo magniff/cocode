@@ -78,8 +78,6 @@ def test_fib():
     fib.__code__ = fib_code
 
     f = fib(1, 1)
-    import dis
-    dis.dis(fib)
     assert next(f) == 2
     assert next(f) == 3
     assert next(f) == 5
