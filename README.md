@@ -43,7 +43,7 @@ factorial_asm_proxy = CodeObjectProxy(
     Dup(),
     Constant(1),
     Compare("=="),
-    JumpFalse("loop"),
+    PopJumpFalse("loop"),
     Pop(),
     Return(),
     interface=factorial_asm,
