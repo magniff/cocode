@@ -25,7 +25,7 @@ As you can see, `cocode` doesn't introduce any additional complexity:
               7 RETURN_VALUE
 ```
 ### WARNING:
-`cocode` actually generates low level code object from your assembly code, so any awkward movement leads to segfault into CPython internals. So this is your responsibility to write correct algorithm, no additional checks performed.
+`cocode` actually generates low level code object from your assembly code, so any awkward movement leads to segfault into CPython internals. Thereby this is your responsibility to write correct algorithm, no additional checks performed.
 Tested on Python 3.4 and 3.5, known to fail on 3.6.
 
 ###EXAMPLE: factorial function:
