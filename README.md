@@ -1,6 +1,6 @@
 # COCODE 🐔
 
-Simple assembly-like language, which can be used to program CPython directly:
+Simple assembly-like language that can be used to program CPython VM directly:
 ```python
 from cocode import CodeObjectProxy, Constant, Return, Add
 
