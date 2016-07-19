@@ -1,5 +1,6 @@
 from cocode import (
     CodeObjectProxy, Constant, Variable, Return, Add, List, Bind, Yield, Pop,
+    Global, CallFunction, VariableFast
 )
 
 
@@ -44,6 +45,51 @@ def test_variable_simple():
     locals_dict = {'string': "world!"}
     assert eval(code, {}, locals_dict) == "Hello world!"
     assert locals_dict["new_var"] == "Hello world!"
+
+
+def test_global_simple_0():
+    code_proxy = CodeObjectProxy(
+        Global('global_var'),
+        Variable('local_var'),
+        Add(),
+        Return(),
+    )
+
+    code = code_proxy.assemble()
+    assert eval(code, {'global_var': 1}, {'local_var': 2}) == 3
+
+
+def test_global_function_call():
+    code_proxy = CodeObjectProxy(
+        Global("sum"),
+        Constant(10),
+        Constant(20),
+        List(2),
+        CallFunction((1, 0)),
+        Return(),
+    )
+
+    code = code_proxy.assemble()
+    assert eval(code) == 30
+
+
+def test_global_function_call_inside_function():
+    def function(a, b):
+        pass
+
+    code_proxy = CodeObjectProxy(
+        Global("sum"),
+        VariableFast("a"),
+        VariableFast("b"),
+        List(2),
+        CallFunction((1, 0)),
+        Return(),
+        interface=function
+    )
+
+    code = code_proxy.assemble()
+    function.__code__ = code
+    assert function(10, 20) == 30
 
 
 def test_list_simple():

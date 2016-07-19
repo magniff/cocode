@@ -4,7 +4,7 @@ from .nonargy import (
 )
 
 from .argy import (
-    Constant, Variable, List, Bind, Jump, PopJumpFalse, PopJumpTrue,
-    Label, Compare, VariableFast, BindFast
+    Constant, Variable, Global, List, Bind, Jump, PopJumpFalse, PopJumpTrue,
+    Label, Compare, VariableFast, BindFast, CallFunction
 )
 from .proxy import CodeObjectProxy

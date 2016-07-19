@@ -18,6 +18,10 @@ class Variable(BaseArgyInstruction):
         return code_proxy.context.register_name(self.arg)
 
 
+class Global(Variable):
+    opname = 'LOAD_GLOBAL'
+
+
 class VariableFast(BaseArgyInstruction):
     opname = 'LOAD_FAST'
     arg = watch.builtins.InstanceOf(str)

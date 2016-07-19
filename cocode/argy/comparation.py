@@ -1,7 +1,6 @@
-import dis
+import opcode
 import watch
-
-from cocode.instruction_base import BaseArgyInstruction
+from ..instruction_base import BaseArgyInstruction
 
 
 class Compare(BaseArgyInstruction):
@@ -9,7 +8,7 @@ class Compare(BaseArgyInstruction):
     """
 
     opname = "COMPARE_OP"
-    arg = watch.Pred(lambda arg: arg in dis.cmp_op)
+    arg = watch.Pred(lambda arg: arg in opcode.cmp_op)
 
     def arg_to_number(self, code_proxy):
-        return dis.cmp_op.index(self.arg)
+        return opcode.cmp_op.index(self.arg)
