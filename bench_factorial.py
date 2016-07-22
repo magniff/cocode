@@ -53,23 +53,28 @@ def factorial_whileloop(value):
 
 
 factorial_reduce = lambda value: reduce(mul, range(1, value + 1), 1)
+rlambda = (
+    lambda func: lambda value: func(func, value)
+)(
+    lambda fac, value: 1 if not value else fac(fac, value - 1) * value
+)
 
 
-print("Benching factorial asm...")
-print(timeit.timeit(lambda: factorial_asm(900), number=10000))
+if __name__ == "__main__":
+    print("Benching factorial asm...")
+    print(timeit.timeit(lambda: factorial_asm(900), number=10000))
 
+    print("Benching factorial recursive...")
+    print(timeit.timeit(lambda: factorial_recursive(900), number=10000))
 
-print("Benching factorial recursive...")
-print(timeit.timeit(lambda: factorial_recursive(900), number=10000))
+    print("Benching factorial recursive lambda...")
+    print(timeit.timeit(lambda: rlambda(900), number=10000))
 
+    print("Benching factorial for loop...")
+    print(timeit.timeit(lambda: factorial_forloop(900), number=10000))
 
-print("Benching factorial for loop...")
-print(timeit.timeit(lambda: factorial_forloop(900), number=10000))
+    print("Benching factorial while loop...")
+    print(timeit.timeit(lambda: factorial_whileloop(900), number=10000))
 
-
-print("Benching factorial while loop...")
-print(timeit.timeit(lambda: factorial_whileloop(900), number=10000))
-
-
-print("Benching factorial reduce...")
-print(timeit.timeit(lambda: factorial_reduce(900), number=10000))
+    print("Benching factorial reduce...")
+    print(timeit.timeit(lambda: factorial_reduce(900), number=10000))

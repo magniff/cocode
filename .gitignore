@@ -14,6 +14,7 @@ venv/*
 .cache
 *~
 *.o
+.hypothesis/
 
 errors.txt
 runall.sh

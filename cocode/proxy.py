@@ -31,6 +31,7 @@ class ContextProxy:
 
 
 class BytecodeProxy(watch.WatchMe):
+
     bytes = watch.ArrayOf(watch.builtins.InstanceOf(int))
 
     def add(self, value):
@@ -38,7 +39,7 @@ class BytecodeProxy(watch.WatchMe):
 
     @property
     def stacksize(self):
-        return 10
+        return 1000
 
     def __init__(self):
         self.bytes = list()
