@@ -1,5 +1,4 @@
 # COCODE 🐔
-
 [![Build Status](https://api.travis-ci.org/magniff/cocode.svg?branch=master)](https://travis-ci.org/magniff/cocode)
 Simple assembly-like language, which can be used to program CPython directly:
 ```python
