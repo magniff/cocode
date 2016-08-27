@@ -9,6 +9,7 @@ class BaseInstruction(watch.WatchMe):
     position = watch.builtins.InstanceOf(int)
 
     def __len__(self):
+        'simple instruction takes only 1 byte'
         return 1
 
     def set_position(self, position):
@@ -18,9 +19,7 @@ class BaseInstruction(watch.WatchMe):
         return self.position
 
     def render(self, code_proxy):
-        """
-        Mutates state of CodeProxys
-        """
+        """ Mutates state of CodeProxys """
         code_proxy.bytecode.add(opcode.opmap[self.opname])
 
 
@@ -28,6 +27,7 @@ class BaseArgyInstruction(BaseInstruction):
     arg = None
 
     def __len__(self):
+        '''1 byte for actual instruction and 2 bytes for args'''
         return 3
 
     @staticmethod
@@ -46,3 +46,4 @@ class BaseArgyInstruction(BaseInstruction):
         super().render(code_proxy)
         for value in self.pack_to_short(self.arg_to_number(code_proxy)):
             code_proxy.bytecode.add(value)
+
