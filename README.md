@@ -14,7 +14,6 @@ code_proxy = CodeObjectProxy(
 code = code_proxy.assemble()
 assert eval(code) == "Hello world!"
 ```
-
 As you can see, `cocode` doesn't introduce any additional complexity:
 ```python
 >>> import dis
@@ -28,7 +27,7 @@ As you can see, `cocode` doesn't introduce any additional complexity:
 `cocode` actually generates low level code object from your assembly code, so any awkward movement leads to segfault into CPython internals. So this is your responsibility to write correct algorithm, no additional checks performed.
 Tested on Python 3.4 and 3.5, known to fail on 3.6.
 
-###EXAMPLE: factorial function:
+### EXAMPLE: factorial function:
 ```python
 def factorial_asm(value):
     pass
@@ -61,7 +60,7 @@ assert factorial_asm(10) == 3628800
 ```
 
 
-###EXAMPLE: fibonacci generator:
+### EXAMPLE: fibonacci generator:
 ```python
 def fibonacci(a, b):
     pass
@@ -102,4 +101,4 @@ def fib(a, b):
         a,b = b,a+b
         yield b
 ```
-it seems that most of the time interpreter spends at YIELD_VALUE instruction.
+it seems that most of the time interpreter spends at `YIELD_VALUE` instruction.
