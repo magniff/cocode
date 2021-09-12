@@ -18,7 +18,7 @@ def test_simple_varname_0():
         Return(),
         interface=func
     )
-    code = code_proxy.assemble(code_flags=67)
+    code = code_proxy.assemble(code_flags=64)
     func.__code__ = code
 
     assert func("hello", "world") == "world"
@@ -36,7 +36,7 @@ def test_simple_varname_1():
         Return(),
         interface=func
     )
-    code = code_proxy.assemble(code_flags=67)
+    code = code_proxy.assemble(code_flags=64)
     func.__code__ = code
 
     assert func("hello", "world") == "helloworld"
@@ -56,7 +56,7 @@ def test_simple_varname_2():
         Return(),
         interface=func
     )
-    code = code_proxy.assemble(code_flags=67)
+    code = code_proxy.assemble(code_flags=64)
     func.__code__ = code
 
     assert func("hello", "world") == "hello_world"

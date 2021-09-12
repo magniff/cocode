@@ -13,7 +13,7 @@ def test_absolute_jump0():
         Label(Return(), "mylabel"),
     )
 
-    code = code_proxy.assemble()
+    code = code_proxy.assemble(code_flags=64)
     assert eval(code) == "First"
 
 
@@ -27,7 +27,7 @@ def test_jump_true():
         Return(),
     )
 
-    code = code_proxy.assemble()
+    code = code_proxy.assemble(code_flags=64)
     assert eval(code, {}, {"condition": True}) == "True branch!"
     assert eval(code, {}, {"condition": False}) == "False branch!"
 
@@ -42,7 +42,7 @@ def test_jump_false():
         Return(),
     )
 
-    code = code_proxy.assemble()
+    code = code_proxy.assemble(code_flags=64)
     assert eval(code, {}, {"condition": False}) == "True branch!"
     assert eval(code, {}, {"condition": True}) == "False branch!"
 

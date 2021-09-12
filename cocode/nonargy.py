@@ -8,6 +8,10 @@ class Pop(BaseInstruction):
 class Add(BaseInstruction):
     opname = "BINARY_ADD"
 
+    def render(self, code_proxy):
+        super().render(code_proxy)
+        code_proxy.bytecode.add(0)
+
 
 class Sub(BaseInstruction):
     opname = "BINARY_SUBTRACT"
@@ -35,6 +39,9 @@ class Negate(BaseInstruction):
 class Return(BaseInstruction):
     opname = "RETURN_VALUE"
 
+    def render(self, code_proxy):
+        super().render(code_proxy)
+        code_proxy.bytecode.add(0)
 
 class Rot2(BaseInstruction):
     opname = "ROT_TWO"

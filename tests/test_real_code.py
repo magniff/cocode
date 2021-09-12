@@ -26,7 +26,7 @@ def test_slow_factorial():
         Return(),
     )
 
-    code = code_proxy.assemble()
+    code = code_proxy.assemble(code_flags=64)
     assert eval(code, {}, {"value": 10}) == 3628800
 
 
@@ -52,7 +52,7 @@ def test_fast_factorial():
         interface=factorial_asm,
     )
 
-    fac_asm_code = factorial_asm_proxy.assemble()
+    fac_asm_code = factorial_asm_proxy.assemble(code_flags=64)
     factorial_asm.__code__ = fac_asm_code
     assert factorial_asm(10) == 3628800
 

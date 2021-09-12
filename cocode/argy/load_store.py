@@ -6,9 +6,16 @@ class Constant(BaseArgyInstruction):
     opname = 'LOAD_CONST'
     arg = watch.builtins.Whatever
 
+    def __len__(self):
+        return 2
+
     def arg_to_number(self, code_proxy):
         return code_proxy.context.register_constant(self.arg)
-
+    
+    def render(self, code_proxy):
+        super().render(code_proxy)
+        for value in self.pack_to_byte(self.arg_to_number(code_proxy)):
+            code_proxy.bytecode.add(value)
 
 class Variable(BaseArgyInstruction):
     opname = 'LOAD_NAME'

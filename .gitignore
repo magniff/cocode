@@ -15,6 +15,7 @@ venv/*
 *~
 *.o
 .hypothesis/
+.vscode
 
 errors.txt
 runall.sh

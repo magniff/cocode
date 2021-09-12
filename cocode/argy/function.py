@@ -11,9 +11,9 @@ class CallFunction(BaseArgyInstruction):
        item0: func call arg count
        item1: func call kwarg count
     """
-    arg = watch.CombineFrom(
-        watch.ArrayOf(watch.builtins.InstanceOf(int)),
-        watch.Pred(lambda value: len(value) == 2)
+    arg = (
+        watch.builtins.Container(watch.builtins.InstanceOf(int), container=list) |
+        watch.builtins.Predicate(lambda value: len(value) == 2)
     )
     opname = "CALL_FUNCTION"
 

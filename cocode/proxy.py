@@ -32,7 +32,7 @@ class ContextProxy:
 
 class BytecodeProxy(watch.WatchMe):
 
-    bytes = watch.ArrayOf(watch.builtins.InstanceOf(int))
+    bytes = watch.builtins.Container(watch.builtins.InstanceOf(int), container=list)
 
     def add(self, value):
         self.bytes.append(value)
@@ -49,18 +49,17 @@ class CodeObjectProxy(watch.WatchMe):
 
     bytecode = BytecodeProxy
     context = ContextProxy
-    instructions = watch.ArrayOf(watch.builtins.InstanceOf(BaseInstruction))
-    label_map = watch.MappingOf(
-        values_type=watch.builtins.InstanceOf(int),
-        keys_type=watch.builtins.InstanceOf(str)
+    instructions = watch.builtins.Container(
+        watch.builtins.InstanceOf(BaseInstruction), container=list
     )
+    label_map = watch.builtins.InstanceOf(str) >> watch.builtins.InstanceOf(int)
     interface = watch.builtins.InstanceOf(types.FunctionType)
 
     def __init__(self, *instr, interface=(lambda: None)):
-        self.instructions = instr
+        self.instructions = list(instr)
         self.interface = interface
 
-    def assemble(self, code_flags=64):
+    def assemble(self, code_flags=67):
         # create new proxy instances on every assembly request
         self.context = type(self).context(self.interface)
         self.bytecode = type(self).bytecode()
@@ -83,18 +82,23 @@ class CodeObjectProxy(watch.WatchMe):
             instruction.render(self)
 
         interface_code = self.interface.__code__
+        print(self.bytecode.bytes)
+
         return types.CodeType(
             interface_code.co_argcount,                # argcount
+            0,                                         # positiononly argcount
             interface_code.co_kwonlyargcount,          # kwonlyargcount
-            len(self.context.varnames),                # nlocals
+            len(self.context.varnames) + len(self.context.names),                # nlocals
             self.bytecode.stacksize,                   # stacksize
             code_flags,                                # flags
             bytes(self.bytecode.bytes),                # codestring
             tuple(self.context.constants),             # constants
             tuple(self.context.names),                 # names
             tuple(self.context.varnames),              # varnames
-            '<string>',                                # filename
-            '<code of %s>' % self.interface.__name__,  # name
+            "<string>",                                # filename
+            "<code of %s>" % self.interface.__name__,  # name
             0,                                         # firstlineno
-            bytes()                                    # lnotab
+            bytes(),                                   # lnotab
+            tuple(),                                   # freevars
+            tuple(),                                   # cellvars
         )
