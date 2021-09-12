@@ -1,22 +1,12 @@
 import struct
 
 import watch
-from ..instruction_base import BaseArgyInstruction
+from ..instruction_base import BaseTwoByteInstruction
 
 
-class CallFunction(BaseArgyInstruction):
-    """
-    arg parameter:
-       type: tuple of list of len 2
-       item0: func call arg count
-       item1: func call kwarg count
-    """
-    arg = (
-        watch.builtins.Container(watch.builtins.InstanceOf(int), container=list) |
-        watch.builtins.Predicate(lambda value: len(value) == 2)
-    )
+class CallFunction(BaseTwoByteInstruction):
+    arg = watch.builtins.InstanceOf(int)
     opname = "CALL_FUNCTION"
 
     def arg_to_number(self, code_proxy):
-        packed, *_ = struct.unpack("<H", bytes(self.arg))
-        return packed
+        return self.arg

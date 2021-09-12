@@ -26,14 +26,6 @@ class BaseInstruction(watch.WatchMe):
 class BaseArgyInstruction(BaseInstruction):
     arg = None
 
-    @staticmethod
-    def pack_to_short(value):
-        return struct.pack("@H", value)
-
-    @staticmethod
-    def pack_to_byte(value):
-        return struct.pack("@B", value)
-
     def __init__(self, arg):
         self.arg = arg
 
@@ -41,3 +33,25 @@ class BaseArgyInstruction(BaseInstruction):
         raise NotImplementedError(
             "How to convert arg -> int for opcode %s?" % self.opname
         )
+
+    def render(self, code_proxy):
+        super().render(code_proxy)
+        for value in self.pack(self.arg_to_number(code_proxy)):
+            code_proxy.bytecode.add(value)
+
+class BaseTwoByteInstruction(BaseArgyInstruction):
+
+    def __len__(self):
+        return 2
+
+    def pack(self, value):
+        return struct.pack("@B", value)
+
+
+class BaseThreeByteInstruction(BaseArgyInstruction):
+
+    def __len__(self):
+        return 3
+
+    def pack(self, value):
+        return struct.pack("@H", value)

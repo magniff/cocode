@@ -1,9 +1,9 @@
 import opcode
 import watch
-from ..instruction_base import BaseArgyInstruction
+from ..instruction_base import BaseArgyInstruction, BaseTwoByteInstruction
 
 
-class Compare(BaseArgyInstruction):
+class Compare(BaseTwoByteInstruction):
     """NOTE: Pops from stack both of args.
     """
 

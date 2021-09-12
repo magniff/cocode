@@ -1,6 +1,6 @@
 from cocode import (
     CodeObjectProxy, Constant, Variable, Return, Add, List, Bind, Yield, Pop,
-    Global, CallFunction, VariableFast
+    Global, CallFunction, VariableFast, BindFast
 )
 import dis
 
@@ -12,8 +12,6 @@ def test_return_constant():
     )
 
     code = code_proxy.assemble(code_flags=64)
-    print(code.co_code)
-    print(code.co_consts)
     assert eval(code) == "foobar"
 
 
@@ -74,17 +72,19 @@ def test_global_simple_0():
 
 
 def test_global_function_call():
+    def add(a, b):
+        return a + b
+
     code_proxy = CodeObjectProxy(
         Global("sum"),
         Constant(10),
         Constant(20),
-        List(2),
-        CallFunction((1, 0)),
+        CallFunction(2),
         Return(),
     )
 
     code = code_proxy.assemble(code_flags=64)
-    assert eval(code) == 30
+    assert eval(code, {"sum": add}, {}) == 30
 
 
 def test_global_function_call_inside_function():
@@ -96,7 +96,7 @@ def test_global_function_call_inside_function():
         VariableFast("a"),
         VariableFast("b"),
         List(2),
-        CallFunction((1, 0)),
+        CallFunction(1),
         Return(),
         interface=function
     )
@@ -118,24 +118,24 @@ def test_list_simple():
     assert eval(code) == ["Hello", "world"]
 
 
-# def test_simple_generator():
-#     def my_gen():
-#         yield
+def test_simple_generator():
+    def my_gen():
+        yield
 
-#     code_proxy = CodeObjectProxy(
-#         Constant(1),
-#         Constant(2),
-#         Constant(3),
-#         Yield(),
-#         Pop(),
-#         Yield(),
-#         Pop(),
-#         Yield(),
-#         interface=my_gen
-#     )
-#     my_gen.__code__ = code_proxy.assemble()
-#     gen = my_gen()
+    code_proxy = CodeObjectProxy(
+        Constant(1),
+        Constant(2),
+        Constant(3),
+        Yield(),
+        Pop(),
+        Yield(),
+        Pop(),
+        Yield(),
+        interface=my_gen
+    )
+    my_gen.__code__ = code_proxy.assemble()
+    gen = my_gen()
 
-#     assert next(gen) == 3
-#     assert next(gen) == 2
-#     assert next(gen) == 1
+    assert next(gen) == 3
+    assert next(gen) == 2
+    assert next(gen) == 1
