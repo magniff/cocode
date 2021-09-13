@@ -1,8 +1,20 @@
 from cocode import (
     CodeObjectProxy, Constant, Variable, Return, Add, List, Bind, Yield, Pop,
-    Global, CallFunction, VariableFast, BindFast
+    Global, CallFunction, VariableFast, BindFast, Nop
 )
 import dis
+
+
+def test_noop():
+    code_proxy = CodeObjectProxy(
+        Nop(), 
+        Constant(None),
+        Nop(), 
+        Return(),
+    )
+
+    code = code_proxy.assemble(code_flags=64)
+    assert eval(code) == None
 
 
 def test_return_constant():
@@ -118,24 +130,24 @@ def test_list_simple():
     assert eval(code) == ["Hello", "world"]
 
 
-# def test_simple_generator():
-#     def my_gen():
-#         yield
+def test_simple_generator():
+    def my_gen():
+        yield
 
-#     code_proxy = CodeObjectProxy(
-#         Constant(1),
-#         Constant(2),
-#         Constant(3),
-#         Yield(),
-#         Pop(),
-#         Yield(),
-#         Pop(),
-#         Yield(),
-#         interface=my_gen
-#     )
-#     my_gen.__code__ = code_proxy.assemble(code_flags=99)
-#     gen = my_gen()
+    code_proxy = CodeObjectProxy(
+        Constant(1),
+        Constant(2),
+        Constant(3),
+        Yield(),
+        Pop(),
+        Yield(),
+        Pop(),
+        Yield(),
+        interface=my_gen
+    )
+    my_gen.__code__ = code_proxy.assemble(code_flags=99)
+    gen = my_gen()
 
-#     assert next(gen) == 3
-#     assert next(gen) == 2
-#     assert next(gen) == 1
+    assert next(gen) == 3
+    assert next(gen) == 2
+    assert next(gen) == 1

@@ -1,4 +1,4 @@
-from cocode.instruction_base import BaseInstruction, BasePaddedInstruction
+from cocode.instruction_base import BaseInstruction, BasePaddedInstruction, BaseTwoByteInstruction
 
 
 class Pop(BasePaddedInstruction):
@@ -17,7 +17,7 @@ class Mult(BasePaddedInstruction):
     opname = "BINARY_MULTIPLY"
 
 
-class Nop(BaseInstruction):
+class Nop(BasePaddedInstruction):
     opname = "NOP"
 
 
@@ -28,20 +28,20 @@ class Yield(BasePaddedInstruction):
     opname = "YIELD_VALUE"
 
 
-class Negate(BaseInstruction):
+class Negate(BasePaddedInstruction):
     opname = "UNARY_NEGATIVE"
 
 
 class Return(BasePaddedInstruction):
     opname = "RETURN_VALUE"
 
-class Rot2(BaseInstruction):
+class Rot2(BasePaddedInstruction):
     opname = "ROT_TWO"
 
 
-class Rot3(BaseInstruction):
+class Rot3(BasePaddedInstruction):
     opname = "ROT_THREE"
 
 
-class Dup(BaseInstruction):
+class Dup(BasePaddedInstruction):
     opname = "DUP_TOP"
