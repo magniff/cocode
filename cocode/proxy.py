@@ -82,13 +82,15 @@ class CodeObjectProxy(watch.WatchMe):
             instruction.render(self)
 
         interface_code = self.interface.__code__
-        print(self.bytecode.bytes)
 
         return types.CodeType(
             interface_code.co_argcount,                # argcount
             0,                                         # positiononly argcount
             interface_code.co_kwonlyargcount,          # kwonlyargcount
-            len(self.context.varnames) + len(self.context.names),                # nlocals
+            (
+                len(self.context.varnames) +
+                len(self.context.names))
+            ,                                          # nlocals
             self.bytecode.stacksize,                   # stacksize
             code_flags,                                # flags
             bytes(self.bytecode.bytes),                # codestring

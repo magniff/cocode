@@ -1,7 +1,7 @@
 import watch
 
 
-from cocode.instruction_base import BaseArgyInstruction, BaseInstruction, BaseTwoByteInstruction
+from cocode.instruction_base import BaseInstruction, BaseTwoByteInstruction
 
 
 class Label(BaseInstruction):

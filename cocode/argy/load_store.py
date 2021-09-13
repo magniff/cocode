@@ -1,5 +1,5 @@
 import watch
-from cocode.instruction_base import BaseArgyInstruction, BaseTwoByteInstruction
+from cocode.instruction_base import BaseTwoByteInstruction
 
 
 class Constant(BaseTwoByteInstruction):
@@ -35,7 +35,7 @@ class Bind(BaseTwoByteInstruction):
     def arg_to_number(self, code_proxy):
         return code_proxy.context.register_name(self.arg)
 
-class BindFast(BaseArgyInstruction):
+class BindFast(BaseTwoByteInstruction):
     opname = 'STORE_FAST'
     arg = watch.builtins.InstanceOf(str)
 

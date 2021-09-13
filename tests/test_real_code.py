@@ -1,6 +1,6 @@
 from cocode import (
     CodeObjectProxy, Variable, Return, Dup, Rot2, Rot3, VariableFast,
-    Compare, Constant, Label, PopJumpTrue, Jump, Add, Sub, Bind, Mult,
+    Compare, Constant, Label, PopJumpTrue, Jump, Add, Sub, Bind, Mult, BindFast,
     Pop, PopJumpFalse, Yield
 )
 
@@ -81,3 +81,4 @@ def test_fib():
     assert next(f) == 2
     assert next(f) == 3
     assert next(f) == 5
+    assert next(f) == 8
