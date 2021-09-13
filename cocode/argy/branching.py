@@ -1,7 +1,7 @@
 import watch
 
 
-from cocode.instruction_base import BaseArgyInstruction, BaseInstruction
+from cocode.instruction_base import BaseArgyInstruction, BaseInstruction, BaseTwoByteInstruction
 
 
 class Label(BaseInstruction):
@@ -25,7 +25,7 @@ class Label(BaseInstruction):
         return self.instruction.render(code_proxy)
 
 
-class BaseJumpInstruction(BaseArgyInstruction):
+class BaseJumpInstruction(BaseTwoByteInstruction):
     arg = watch.builtins.InstanceOf(str)
 
     def arg_to_number(self, code_proxy):

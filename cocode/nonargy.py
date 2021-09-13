@@ -1,23 +1,19 @@
-from cocode.instruction_base import BaseInstruction
+from cocode.instruction_base import BaseInstruction, BasePaddedInstruction
 
 
-class Pop(BaseInstruction):
+class Pop(BasePaddedInstruction):
     opname = "POP_TOP"
 
 
-class Add(BaseInstruction):
+class Add(BasePaddedInstruction):
     opname = "BINARY_ADD"
 
-    def render(self, code_proxy):
-        super().render(code_proxy)
-        code_proxy.bytecode.add(0)
 
-
-class Sub(BaseInstruction):
+class Sub(BasePaddedInstruction):
     opname = "BINARY_SUBTRACT"
 
 
-class Mult(BaseInstruction):
+class Mult(BasePaddedInstruction):
     opname = "BINARY_MULTIPLY"
 
 
@@ -25,7 +21,7 @@ class Nop(BaseInstruction):
     opname = "NOP"
 
 
-class Yield(BaseInstruction):
+class Yield(BasePaddedInstruction):
     """For some reason Cpython retains None on top of the stack after yield.
     WTF alarm!
     """
@@ -36,13 +32,8 @@ class Negate(BaseInstruction):
     opname = "UNARY_NEGATIVE"
 
 
-class Return(BaseInstruction):
+class Return(BasePaddedInstruction):
     opname = "RETURN_VALUE"
-
-    def render(self, code_proxy):
-        super().render(code_proxy)
-        code_proxy.bytecode.add(0)
-
 
 class Rot2(BaseInstruction):
     opname = "ROT_TWO"
